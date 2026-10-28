@@ -42,23 +42,44 @@ SCAN 的序列与 SSTF 相同，行程却多一倍——多出来的正是 22 �
 - 空格：暂停 · `r`：重来
 - 无操作时自动轮播三种算法（每轮走完自动换下一种）
 
-## 录制（生成 MP4）
+## 怎么出片（带旁白，音画逐拍对齐）
 
-页面暴露了确定性重放钩子，所以可以逐帧出图，不依赖实时帧率：
+片子不是"录屏"，是**逐拍编排**：每一张请求卡是一拍，那一拍的画面长度 = 那一拍的语音长度 + 呼吸，
+画面内容是仿真里这一拍的时间区间被拉伸到这段长度。所以话长画就慢，图和话不会错位。
+
+四步：
 
 ```sh
-# 1) 总时长（秒）
-#    在浏览器控制台： __span()
-# 2) 逐帧截图（20 fps），drive.mjs 来自 anatomy 技能
+# 1) 旁白：文本在 audio/manifest.json 里，逐拍合成（本机语音，中文女声 Tingting）
+#    say -v Tingting -r 160 -o /tmp/x.aiff "……" && ffmpeg -i /tmp/x.aiff -ar 44100 -ac 1 audio/<mode>-<i>-<beat>.wav
+#    （wav 不进 git，随用随生成；文本才是资产）
+
+# 2) 分镜 + 出帧动作表：把语音长度、仿真拍区间、帧号算成 plan.json 和动作表
+python3 plan_video.py          # 打印：拍数 / 总时长 / 需出帧数
+
+# 3) 出帧（anatomy 技能里的 drive.mjs）
 node <anatomy>/scripts/drive.mjs disk-scheduler-light.html \
-  --actions frames.json --height 900 --scale 2
-# frames.json: [["eval","window.__seek(0.05)"],["shot","frames/0001.png"], ...]
-# 3) 编码
-ffmpeg -framerate 20 -i frames/%04d.png -c:v libx264 -pix_fmt yuv420p -crf 18 \
-  -movflags +faststart 磁盘调度-试验台演示.mp4
+  --actions /tmp/actions.json --height 900 --scale 2
+
+# 4) 编码：每拍单独编码（运动拍用帧序列、静帧拍用单帧循环）→ 拼画面 → 拼"语音+补齐静音" → 合流
+python3 encode_video.py
 ```
 
-`__seek(t)` 会从头重放到 t 秒再画一帧，所以任意时刻的画面都可复现，不掉帧、不抖。
+产出：`磁盘调度-试验台演示（带旁白）.mp4`，3 分 05 秒，1316×932 / 20fps / AAC 单声道。
+
+**重出成片的时间账**：出帧约 0.33 秒/张（`--scale 2`），2377 张约 13 分钟；
+把 `--scale` 降到 1 或 FPS 降到 15 可以减半。编码约 1 分钟。
+
+### 这一版的分镜时间轴
+
+| 时间 | 内容 |
+|---|---|
+| 0:00–0:50 | FCFS：九拍拍完，表盘 26 格；收尾讲"路绕不是活多" |
+| 0:50–1:56 | SSTF：按最近原则重排成 ④⑥⑨⑤⑦①②⑧③，表盘 8 格 |
+| 1:56–3:05 | SCAN：做到 22 后空驶到 26 才折返，表盘 16 格；收尾讲饥饿与等待上限 |
+
+调整节奏只需改两处：`plan_video.py` 里的 `HOLD_PAD`（每拍呼吸）与 `HOLD_MIN`（最短拍长）；
+要改配音就改 `audio/manifest.json` 里的文本再重跑 1–4 步。
 
 ## 验证记录（2026-10-27）
 

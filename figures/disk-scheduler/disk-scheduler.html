@@ -814,7 +814,9 @@ let selX = D.restSelX, selT = D.restSelX;
 let lifts = D.cardX.map(() => 0);
 let dwell = 0, phase = "seek", prevSpin = 0, tour = true, paused = false;
 let visible = false, frame = 0, last = 0, idle = 0;
-const SPIN_RATE = 3.0;   // rad/s — the platter never stops, that is the point
+const SPIN_RATE = 1.6;   // rad/s — 慢到能看见"要的那一块转过来"
+const TAU_HEAD = 0.5, TAU_SEL = 0.3, TAU_LIFT = 0.28;
+const HOLD_SERVE = 1.1, HOLD_TURN = 1.6;
 
 function spinSet(angle, target) {
   const [cx, cy] = D.PC;
@@ -843,7 +845,7 @@ function advance() {
   travelNow += Math.abs(stop.cyl - (plan.stops[stopAt - 1] || { cyl: D.start }).cyl);
   stopAt += 1;
   dwell = 0;
-  phase = "seek";
+  phase = "select";
   targets();
 }
 
@@ -851,7 +853,7 @@ const cycle = ["fcfs", "sstf", "scan"];
 function setMode(next) {
   mode = next;
   plan = D.orders[mode];
-  stopAt = 0; travelNow = 0; dwell = 0; phase = "seek"; tour = false;
+  stopAt = 0; travelNow = 0; dwell = 0; phase = "select"; tour = false;
   lifts = D.cardX.map(() => 0);
   knobPointer.innerHTML = pointerHtml(cycle.indexOf(mode));
   run();
@@ -872,11 +874,14 @@ headX = headT; selX = selT;
 
 function label() {
   const stop = plan.stops[stopAt];
-  const parts = [plan.name, "行程 " + travelNow + " 格"];
-  if (stop && stop.id) parts.push(D.circled[stop.id - 1] + " 柱面" + stop.cyl + "/扇区" + stop.sector);
-  else if (stop) parts.push("空驶到 " + stop.cyl);
-  else parts.push("完毕 · 共 " + plan.travel + " 格");
-  return parts.join(" · ");
+  const head = plan.name + " · 行程 " + travelNow + " 格";
+  if (!stop) return head + " · 完毕 · 共 " + plan.travel + " 格";
+  const card = stop.id ? D.circled[stop.id - 1] : "";
+  if (!stop.id) return head + " · 空驶 → 柱面 " + stop.cyl + "（无请求，只为掉头）";
+  if (phase === "select") return head + " · ① 选中 " + card + "（柱面 " + stop.cyl + "）";
+  if (phase === "seek") return head + " · ② 移臂 → 柱面 " + stop.cyl + "（" + card + "）";
+  if (phase === "wait") return head + " · ③ 等扇区 " + stop.sector + " 转过来（" + card + "）";
+  return head + " · 完成 " + card + "：柱面 " + stop.cyl + " 扇区 " + stop.sector;
 }
 
 window.__state = () => ({ phase, stopAt, spin: +spin.toFixed(2), prevSpin: +prevSpin.toFixed(2), headX: +headX.toFixed(1), headT: +headT.toFixed(1), selX: +selX.toFixed(1), selT: +selT.toFixed(1), travelNow, dwell: +dwell.toFixed(2), paused, tour });
@@ -906,32 +911,36 @@ function step(dt, calm) {
   prevSpin = spin;
   spin += SPIN_RATE * dt;
   if (spin > Math.PI * 2) { spin -= Math.PI * 2; }
-  headX = calm ? headT : headX + (headT - headX) * (1 - Math.exp(-dt / 0.22));
-  selX = calm ? selT : selX + (selT - selX) * (1 - Math.exp(-dt / 0.16));
+
+  // 三拍节奏：① 读数头选中下一张卡 ② 滑架移臂到位 ③ 等扇区转过来 → 服务。
+  // 移臂要等选中之后才动，否则观众看不出"排队决定了去哪个柱面"。
+  const selSeated = Math.abs(selX - selT) < 0.05;
+  const headSeated = Math.abs(headX - headT) < 0.05;
+  selX = calm ? selT : selX + (selT - selX) * (1 - Math.exp(-dt / TAU_SEL));
+  if (phase !== "select") headX = calm ? headT : headX + (headT - headX) * (1 - Math.exp(-dt / TAU_HEAD));
   lifts = lifts.map((v, i) => {
     const want = plan.stops.findIndex((s, j) => j < stopAt && s.id === i + 1) >= 0 ? D.cardLift : 0;
-    return calm ? want : v + (want - v) * (1 - Math.exp(-dt / 0.1));
+    return calm ? want : v + (want - v) * (1 - Math.exp(-dt / TAU_LIFT));
   });
 
-  const seated = Math.abs(headX - headT) < 0.05 && Math.abs(selX - selT) < 0.05;
   const TWO = Math.PI * 2;
   if (stop) {
     if (stop.id) {
-      // 移臂先到位, 再等扇区转过来: the wanted sector has to pass under the head.
-      // Detect the crossing, not a window — at 3 rad/s the window is only 60 ms.
-      if (phase === "seek" && seated) phase = "wait";
-      if (phase === "wait") {
+      if (phase === "select") { if (selSeated) { phase = "seek"; dwell = 0; } }
+      else if (phase === "seek") { if (headSeated) { phase = "wait"; dwell = 0; } }
+      else if (phase === "wait") {
+        // 扇区必须自己转过来：检测穿越，而不是一个时间窗口
         const nowAngle = (spin + sectorAngle(stop.sector)) % TWO;
         const wasAngle = (prevSpin + sectorAngle(stop.sector)) % TWO;
         if (wasAngle > nowAngle) { phase = "serve"; dwell = 0; }
-      }
-      if (phase === "serve") {
+      } else {
         dwell += dt;
-        if (dwell > 0.2) advance();
+        if (dwell > HOLD_SERVE) advance();
       }
-    } else if (seated) {
-      dwell += dt;
-      if (dwell > 0.7) advance();
+    } else {
+      if (phase === "select") { if (selSeated) phase = "seek"; }
+      if ((phase === "seek" || phase === "wait") && headSeated) { phase = "serve"; dwell = 0; }
+      if (phase === "serve") { dwell += dt; if (dwell > HOLD_TURN) advance(); }
     }
   } else {
     dwell += dt;
@@ -949,11 +958,12 @@ function tick(now) {
 }
 
 // --- deterministic replay, for rendering a video frame by frame -------------
-function resetSim(next = "fcfs") {
+function resetSim(next = "fcfs", touring = true) {
   simTime = 0;
+  tour = touring;
   mode = next;
   plan = D.orders[mode];
-  stopAt = 0; travelNow = 0; dwell = 0; idle = 0; phase = "seek"; spin = 0; prevSpin = 0;
+  stopAt = 0; travelNow = 0; dwell = 0; idle = 0; phase = "select"; spin = 0; prevSpin = 0;
   lifts = D.cardX.map(() => 0);
   knobPointer.innerHTML = pointerHtml(cycle.indexOf(mode));
   targets();
@@ -973,14 +983,36 @@ window.__seek = (seconds) => {
   draw();
   return label();
 };
-window.__trace = (seconds = 6) => {
-  resetSim(window.__demoMode || "fcfs");
-  const out = []; let last = -1;
+window.__seekMode = (key, seconds) => {
+  if (!deterministic) { deterministic = true; if (frame) cancelAnimationFrame(frame); frame = 0; paused = false; }
+  const safe = Math.max(0, Math.min(seconds, 400));
+  if (mode !== key || safe <= 1e-6 || safe < simTime - 1e-6) { resetSim(key, false); simTime = 0; }
+  const n = Math.round((safe - simTime) * 60);
+  for (let i = 0; i < n; i++) step(1 / 60, false);
+  simTime += n / 60;
+  draw();
+  return label();
+};
+window.__modeSpan = (key) => {
+  deterministic = true; if (frame) cancelAnimationFrame(frame); frame = 0;
+  resetSim(key, false);
+  let t = 0;
+  for (t = 0; t < 400; t += 1 / 60) {
+    step(1 / 60, false);
+    if (stopAt >= plan.stops.length && dwell > 2.0) break;
+  }
+  return Math.round((t + 0.8) * 100) / 100;
+};
+window.__beats = (key, seconds = 200) => {
+  deterministic = true; if (frame) cancelAnimationFrame(frame); frame = 0;
+  resetSim(key, false);
+  const out = []; let last = 0;
   for (let i = 0; i < seconds * 60; i++) {
     step(1 / 60, false);
-    if (stopAt !== last) { out.push([+(i / 60).toFixed(2), stopAt, plan.stops[Math.max(0, stopAt - 1)].cyl, phase, +spin.toFixed(2), +(headX - headT).toFixed(2)]); last = stopAt; }
+    if (stopAt !== last) { out.push([last, +(i / 60).toFixed(3)]); last = stopAt; }
+    if (stopAt >= plan.stops.length && dwell > 2.2) break;
   }
-  return out;
+  return { stops: plan.stops.length, spans: out, end: +(i => i)(0) || 0, total: +(out.length ? out[out.length - 1][1] : 0) };
 };
 window.__span = (limit = 300) => {
   deterministic = true; if (frame) cancelAnimationFrame(frame); frame = 0;
@@ -997,7 +1029,7 @@ window.__span = (limit = 300) => {
 function setModeAfterTour() {
   mode = cycle[(cycle.indexOf(mode) + 1) % cycle.length];
   plan = D.orders[mode];
-  stopAt = 0; travelNow = 0; dwell = 0; phase = "seek";
+  stopAt = 0; travelNow = 0; dwell = 0; phase = "select";
   lifts = D.cardX.map(() => 0);
   knobPointer.innerHTML = pointerHtml(cycle.indexOf(mode));
   targets();

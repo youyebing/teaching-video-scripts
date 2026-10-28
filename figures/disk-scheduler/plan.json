@@ -1,0 +1,562 @@
+[
+ {
+  "mode": "fcfs",
+  "beat": "intro",
+  "text": "先看最笨的排法。先来先服务：谁先到，就先做谁。",
+  "audio": "audio/fcfs-00-intro.wav",
+  "dur": 6.738,
+  "fps": 20,
+  "kind": "hold",
+  "sim": 0.8,
+  "frames": [
+   0,
+   1
+  ]
+ },
+ {
+  "mode": "fcfs",
+  "beat": "①",
+  "text": "①在十八层，滑架先跑过去。",
+  "audio": "audio/fcfs-01-1.wav",
+  "dur": 3.793,
+  "fps": 20,
+  "kind": "motion",
+  "sim": [
+   1.6,
+   6.983
+  ],
+  "frames": [
+   1,
+   76
+  ]
+ },
+ {
+  "mode": "fcfs",
+  "beat": "②",
+  "text": "②在十六层，刚下来又要掉头。",
+  "audio": "audio/fcfs-02-2.wav",
+  "dur": 4.003,
+  "fps": 20,
+  "kind": "motion",
+  "sim": [
+   6.983,
+   12.083
+  ],
+  "frames": [
+   77,
+   80
+  ]
+ },
+ {
+  "mode": "fcfs",
+  "beat": "③",
+  "text": "③也在十六层，顺手做掉。",
+  "audio": "audio/fcfs-03-3.wav",
+  "dur": 3.687,
+  "fps": 20,
+  "kind": "motion",
+  "sim": [
+   12.083,
+   14.833
+  ],
+  "frames": [
+   157,
+   74
+  ]
+ },
+ {
+  "mode": "fcfs",
+  "beat": "④",
+  "text": "④在二十一层，机械臂一路甩回上面。",
+  "audio": "audio/fcfs-04-4.wav",
+  "dur": 4.453,
+  "fps": 20,
+  "kind": "motion",
+  "sim": [
+   14.833,
+   23.083
+  ],
+  "frames": [
+   231,
+   89
+  ]
+ },
+ {
+  "mode": "fcfs",
+  "beat": "⑤",
+  "text": "⑤又回到十八层。",
+  "audio": "audio/fcfs-05-5.wav",
+  "dur": 3.2,
+  "fps": 20,
+  "kind": "motion",
+  "sim": [
+   23.083,
+   31.333
+  ],
+  "frames": [
+   320,
+   64
+  ]
+ },
+ {
+  "mode": "fcfs",
+  "beat": "⑥",
+  "text": "⑥再上二十一层。",
+  "audio": "audio/fcfs-06-6.wav",
+  "dur": 3.2,
+  "fps": 20,
+  "kind": "motion",
+  "sim": [
+   31.333,
+   36.833
+  ],
+  "frames": [
+   384,
+   64
+  ]
+ },
+ {
+  "mode": "fcfs",
+  "beat": "⑦",
+  "text": "⑦又回十八层。",
+  "audio": "audio/fcfs-07-7.wav",
+  "dur": 3.2,
+  "fps": 20,
+  "kind": "motion",
+  "sim": [
+   36.833,
+   42.333
+  ],
+  "frames": [
+   448,
+   64
+  ]
+ },
+ {
+  "mode": "fcfs",
+  "beat": "⑧",
+  "text": "⑧再下十六层。",
+  "audio": "audio/fcfs-08-8.wav",
+  "dur": 3.2,
+  "fps": 20,
+  "kind": "motion",
+  "sim": [
+   42.333,
+   47.033
+  ],
+  "frames": [
+   512,
+   64
+  ]
+ },
+ {
+  "mode": "fcfs",
+  "beat": "⑨",
+  "text": "⑨最后冲到二十二层。",
+  "audio": "audio/fcfs-09-9.wav",
+  "dur": 3.2,
+  "fps": 20,
+  "kind": "motion",
+  "sim": [
+   47.033,
+   53.317
+  ],
+  "frames": [
+   576,
+   64
+  ]
+ },
+ {
+  "mode": "fcfs",
+  "beat": "end",
+  "text": "九个请求做完，表盘记了二十六格。它跑这么远，不是因为活多，是因为路绕。公平，但不聪明。",
+  "audio": "audio/fcfs-10-end.wav",
+  "dur": 11.687,
+  "fps": 20,
+  "kind": "hold",
+  "sim": 53.317,
+  "frames": [
+   640,
+   1
+  ]
+ },
+ {
+  "mode": "sstf",
+  "beat": "intro",
+  "text": "再看最短寻道。规则只有一条：每一步，都挑离当前位置最近的那个。",
+  "audio": "audio/sstf-00-intro.wav",
+  "dur": 7.883,
+  "fps": 20,
+  "kind": "hold",
+  "sim": 0.8,
+  "frames": [
+   641,
+   1
+  ]
+ },
+ {
+  "mode": "sstf",
+  "beat": "④",
+  "text": "起点二十层，最近的是二十一层。④和⑥一起做，同一层按扇区排，④的扇区五在前。",
+  "audio": "audio/sstf-01-4.wav",
+  "dur": 9.611,
+  "fps": 20,
+  "kind": "motion",
+  "sim": [
+   1.6,
+   7.367
+  ],
+  "frames": [
+   642,
+   192
+  ]
+ },
+ {
+  "mode": "sstf",
+  "beat": "⑥",
+  "text": "⑥的扇区十在后。",
+  "audio": "audio/sstf-02-6.wav",
+  "dur": 3.2,
+  "fps": 20,
+  "kind": "motion",
+  "sim": [
+   7.367,
+   13.267
+  ],
+  "frames": [
+   834,
+   64
+  ]
+ },
+ {
+  "mode": "sstf",
+  "beat": "⑨",
+  "text": "做完停在二十一层，最近的是二十二层，做⑨。",
+  "audio": "audio/sstf-03-9.wav",
+  "dur": 5.315,
+  "fps": 20,
+  "kind": "motion",
+  "sim": [
+   13.267,
+   17.983
+  ],
+  "frames": [
+   898,
+   106
+  ]
+ },
+ {
+  "mode": "sstf",
+  "beat": "⑤",
+  "text": "往下只剩十八层和十六层。先去十八层，三个请求按扇区排，⑤的扇区四最小。",
+  "audio": "audio/sstf-04-5.wav",
+  "dur": 9.424,
+  "fps": 20,
+  "kind": "motion",
+  "sim": [
+   17.983,
+   23.483
+  ],
+  "frames": [
+   1004,
+   188
+  ]
+ },
+ {
+  "mode": "sstf",
+  "beat": "⑦",
+  "text": "⑦和①都是扇区六，那就比磁头号，⑦的磁头七在前。",
+  "audio": "audio/sstf-05-7.wav",
+  "dur": 6.476,
+  "fps": 20,
+  "kind": "motion",
+  "sim": [
+   23.483,
+   26.617
+  ],
+  "frames": [
+   1192,
+   130
+  ]
+ },
+ {
+  "mode": "sstf",
+  "beat": "①",
+  "text": "①的磁头八在后。",
+  "audio": "audio/sstf-06-1.wav",
+  "dur": 3.2,
+  "fps": 20,
+  "kind": "motion",
+  "sim": [
+   26.617,
+   30.55
+  ],
+  "frames": [
+   1322,
+   64
+  ]
+ },
+ {
+  "mode": "sstf",
+  "beat": "②",
+  "text": "最后下到十六层。②的扇区三最小。",
+  "audio": "audio/sstf-07-2.wav",
+  "dur": 4.351,
+  "fps": 20,
+  "kind": "motion",
+  "sim": [
+   30.55,
+   35.65
+  ],
+  "frames": [
+   1386,
+   87
+  ]
+ },
+ {
+  "mode": "sstf",
+  "beat": "⑧",
+  "text": "⑧扇区四。",
+  "audio": "audio/sstf-08-8.wav",
+  "dur": 3.2,
+  "fps": 20,
+  "kind": "motion",
+  "sim": [
+   35.65,
+   39.183
+  ],
+  "frames": [
+   1473,
+   64
+  ]
+ },
+ {
+  "mode": "sstf",
+  "beat": "③",
+  "text": "③扇区六。表盘停在八格。",
+  "audio": "audio/sstf-09-3.wav",
+  "dur": 3.547,
+  "fps": 20,
+  "kind": "motion",
+  "sim": [
+   39.183,
+   42.333
+  ],
+  "frames": [
+   1537,
+   71
+  ]
+ },
+ {
+  "mode": "sstf",
+  "beat": "end",
+  "text": "同样的九个请求，活一样多，路少了三分之二。省下来的，是机械臂的路。",
+  "audio": "audio/sstf-10-end.wav",
+  "dur": 8.991,
+  "fps": 20,
+  "kind": "hold",
+  "sim": 42.333,
+  "frames": [
+   1608,
+   1
+  ]
+ },
+ {
+  "mode": "scan",
+  "beat": "intro",
+  "text": "最短寻道有个毛病：它永远只挑近的，远的可能永远轮不上，这叫饥饿。电梯算法的解法是：只朝一个方向走，走到头，再折返。",
+  "audio": "audio/scan-00-intro.wav",
+  "dur": 14.403,
+  "fps": 20,
+  "kind": "hold",
+  "sim": 0.8,
+  "frames": [
+   1609,
+   1
+  ]
+ },
+ {
+  "mode": "scan",
+  "beat": "④",
+  "text": "④，二十一层。",
+  "audio": "audio/scan-01-4.wav",
+  "dur": 3.2,
+  "fps": 20,
+  "kind": "motion",
+  "sim": [
+   1.6,
+   7.367
+  ],
+  "frames": [
+   1610,
+   64
+  ]
+ },
+ {
+  "mode": "scan",
+  "beat": "⑥",
+  "text": "⑥，同一层，扇区十。",
+  "audio": "audio/scan-02-6.wav",
+  "dur": 3.34,
+  "fps": 20,
+  "kind": "motion",
+  "sim": [
+   7.367,
+   13.267
+  ],
+  "frames": [
+   1674,
+   67
+  ]
+ },
+ {
+  "mode": "scan",
+  "beat": "⑨",
+  "text": "⑨，二十二层。",
+  "audio": "audio/scan-03-9.wav",
+  "dur": 3.2,
+  "fps": 20,
+  "kind": "motion",
+  "sim": [
+   13.267,
+   17.983
+  ],
+  "frames": [
+   1741,
+   64
+  ]
+ },
+ {
+  "mode": "scan",
+  "beat": "turn",
+  "text": "这里已经没有请求了，但它必须走到盘的最外圈二十六层才能掉头。这一趟，是空驶。",
+  "audio": "audio/scan-04-turn.wav",
+  "dur": 9.221,
+  "fps": 20,
+  "kind": "motion",
+  "sim": [
+   17.983,
+   22.017
+  ],
+  "frames": [
+   1805,
+   184
+  ]
+ },
+ {
+  "mode": "scan",
+  "beat": "⑤",
+  "text": "掉头回来，⑤，十八层。",
+  "audio": "audio/scan-05-5.wav",
+  "dur": 3.342,
+  "fps": 20,
+  "kind": "motion",
+  "sim": [
+   22.017,
+   31.333
+  ],
+  "frames": [
+   1989,
+   67
+  ]
+ },
+ {
+  "mode": "scan",
+  "beat": "⑦",
+  "text": "⑦，同扇区比磁头号。",
+  "audio": "audio/scan-06-7.wav",
+  "dur": 3.2,
+  "fps": 20,
+  "kind": "motion",
+  "sim": [
+   31.333,
+   34.467
+  ],
+  "frames": [
+   2056,
+   64
+  ]
+ },
+ {
+  "mode": "scan",
+  "beat": "①",
+  "text": "①。",
+  "audio": "audio/scan-07-1.wav",
+  "dur": 3.2,
+  "fps": 20,
+  "kind": "motion",
+  "sim": [
+   34.467,
+   38.4
+  ],
+  "frames": [
+   2120,
+   64
+  ]
+ },
+ {
+  "mode": "scan",
+  "beat": "②",
+  "text": "下到十六层，②。",
+  "audio": "audio/scan-08-2.wav",
+  "dur": 3.2,
+  "fps": 20,
+  "kind": "motion",
+  "sim": [
+   38.4,
+   43.5
+  ],
+  "frames": [
+   2184,
+   64
+  ]
+ },
+ {
+  "mode": "scan",
+  "beat": "⑧",
+  "text": "⑧。",
+  "audio": "audio/scan-09-8.wav",
+  "dur": 3.2,
+  "fps": 20,
+  "kind": "motion",
+  "sim": [
+   43.5,
+   47.033
+  ],
+  "frames": [
+   2248,
+   64
+  ]
+ },
+ {
+  "mode": "scan",
+  "beat": "③",
+  "text": "③。表盘十六格。",
+  "audio": "audio/scan-10-3.wav",
+  "dur": 3.2,
+  "fps": 20,
+  "kind": "motion",
+  "sim": [
+   47.033,
+   50.183
+  ],
+  "frames": [
+   2312,
+   64
+  ]
+ },
+ {
+  "mode": "scan",
+  "beat": "end",
+  "text": "多花的这一趟，买的是每个请求都有等待上限：不会有人被无限跳过。所以选算法不是比谁快，是先问自己：我要省路，还是要保证谁都不被饿死。",
+  "audio": "audio/scan-11-end.wav",
+  "dur": 16.621,
+  "fps": 20,
+  "kind": "hold",
+  "sim": 50.183,
+  "frames": [
+   2376,
+   1
+  ]
+ }
+]

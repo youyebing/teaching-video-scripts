@@ -1,0 +1,212 @@
+{
+ "fcfs": [
+  {
+   "beat": "intro",
+   "text": "先看最笨的排法。先来先服务：谁先到，就先做谁。",
+   "file": "audio/fcfs-00-intro.wav",
+   "dur": 5.738
+  },
+  {
+   "beat": "①",
+   "text": "①在十八层，滑架先跑过去。",
+   "file": "audio/fcfs-01-1.wav",
+   "dur": 3.243
+  },
+  {
+   "beat": "②",
+   "text": "②在十六层，刚下来又要掉头。",
+   "file": "audio/fcfs-02-2.wav",
+   "dur": 3.453
+  },
+  {
+   "beat": "③",
+   "text": "③也在十六层，顺手做掉。",
+   "file": "audio/fcfs-03-3.wav",
+   "dur": 3.137
+  },
+  {
+   "beat": "④",
+   "text": "④在二十一层，机械臂一路甩回上面。",
+   "file": "audio/fcfs-04-4.wav",
+   "dur": 3.903
+  },
+  {
+   "beat": "⑤",
+   "text": "⑤又回到十八层。",
+   "file": "audio/fcfs-05-5.wav",
+   "dur": 1.815
+  },
+  {
+   "beat": "⑥",
+   "text": "⑥再上二十一层。",
+   "file": "audio/fcfs-06-6.wav",
+   "dur": 1.793
+  },
+  {
+   "beat": "⑦",
+   "text": "⑦又回十八层。",
+   "file": "audio/fcfs-07-7.wav",
+   "dur": 1.7
+  },
+  {
+   "beat": "⑧",
+   "text": "⑧再下十六层。",
+   "file": "audio/fcfs-08-8.wav",
+   "dur": 1.695
+  },
+  {
+   "beat": "⑨",
+   "text": "⑨最后冲到二十二层。",
+   "file": "audio/fcfs-09-9.wav",
+   "dur": 2.35
+  },
+  {
+   "beat": "end",
+   "text": "九个请求做完，表盘记了二十六格。它跑这么远，不是因为活多，是因为路绕。公平，但不聪明。",
+   "file": "audio/fcfs-10-end.wav",
+   "dur": 10.187
+  }
+ ],
+ "sstf": [
+  {
+   "beat": "intro",
+   "text": "再看最短寻道。规则只有一条：每一步，都挑离当前位置最近的那个。",
+   "file": "audio/sstf-00-intro.wav",
+   "dur": 6.883
+  },
+  {
+   "beat": "④",
+   "text": "起点二十层，最近的是二十一层。④和⑥一起做，同一层按扇区排，④的扇区五在前。",
+   "file": "audio/sstf-01-4.wav",
+   "dur": 9.061
+  },
+  {
+   "beat": "⑥",
+   "text": "⑥的扇区十在后。",
+   "file": "audio/sstf-02-6.wav",
+   "dur": 1.816
+  },
+  {
+   "beat": "⑨",
+   "text": "做完停在二十一层，最近的是二十二层，做⑨。",
+   "file": "audio/sstf-03-9.wav",
+   "dur": 4.765
+  },
+  {
+   "beat": "⑤",
+   "text": "往下只剩十八层和十六层。先去十八层，三个请求按扇区排，⑤的扇区四最小。",
+   "file": "audio/sstf-04-5.wav",
+   "dur": 8.874
+  },
+  {
+   "beat": "⑦",
+   "text": "⑦和①都是扇区六，那就比磁头号，⑦的磁头七在前。",
+   "file": "audio/sstf-05-7.wav",
+   "dur": 5.926
+  },
+  {
+   "beat": "①",
+   "text": "①的磁头八在后。",
+   "file": "audio/sstf-06-1.wav",
+   "dur": 1.652
+  },
+  {
+   "beat": "②",
+   "text": "最后下到十六层。②的扇区三最小。",
+   "file": "audio/sstf-07-2.wav",
+   "dur": 3.801
+  },
+  {
+   "beat": "⑧",
+   "text": "⑧扇区四。",
+   "file": "audio/sstf-08-8.wav",
+   "dur": 1.184
+  },
+  {
+   "beat": "③",
+   "text": "③扇区六。表盘停在八格。",
+   "file": "audio/sstf-09-3.wav",
+   "dur": 2.997
+  },
+  {
+   "beat": "end",
+   "text": "同样的九个请求，活一样多，路少了三分之二。省下来的，是机械臂的路。",
+   "file": "audio/sstf-10-end.wav",
+   "dur": 7.491
+  }
+ ],
+ "scan": [
+  {
+   "beat": "intro",
+   "text": "最短寻道有个毛病：它永远只挑近的，远的可能永远轮不上，这叫饥饿。电梯算法的解法是：只朝一个方向走，走到头，再折返。",
+   "file": "audio/scan-00-intro.wav",
+   "dur": 13.403
+  },
+  {
+   "beat": "④",
+   "text": "④，二十一层。",
+   "file": "audio/scan-01-4.wav",
+   "dur": 1.65
+  },
+  {
+   "beat": "⑥",
+   "text": "⑥，同一层，扇区十。",
+   "file": "audio/scan-02-6.wav",
+   "dur": 2.79
+  },
+  {
+   "beat": "⑨",
+   "text": "⑨，二十二层。",
+   "file": "audio/scan-03-9.wav",
+   "dur": 1.689
+  },
+  {
+   "beat": "turn",
+   "text": "这里已经没有请求了，但它必须走到盘的最外圈二十六层才能掉头。这一趟，是空驶。",
+   "file": "audio/scan-04-turn.wav",
+   "dur": 8.671
+  },
+  {
+   "beat": "⑤",
+   "text": "掉头回来，⑤，十八层。",
+   "file": "audio/scan-05-5.wav",
+   "dur": 2.792
+  },
+  {
+   "beat": "⑦",
+   "text": "⑦，同扇区比磁头号。",
+   "file": "audio/scan-06-7.wav",
+   "dur": 2.536
+  },
+  {
+   "beat": "①",
+   "text": "①。",
+   "file": "audio/scan-07-1.wav",
+   "dur": 0.432
+  },
+  {
+   "beat": "②",
+   "text": "下到十六层，②。",
+   "file": "audio/scan-08-2.wav",
+   "dur": 2.069
+  },
+  {
+   "beat": "⑧",
+   "text": "⑧。",
+   "file": "audio/scan-09-8.wav",
+   "dur": 0.43
+  },
+  {
+   "beat": "③",
+   "text": "③。表盘十六格。",
+   "file": "audio/scan-10-3.wav",
+   "dur": 2.08
+  },
+  {
+   "beat": "end",
+   "text": "多花的这一趟，买的是每个请求都有等待上限：不会有人被无限跳过。所以选算法不是比谁快，是先问自己：我要省路，还是要保证谁都不被饿死。",
+   "file": "audio/scan-11-end.wav",
+   "dur": 15.121
+  }
+ ]
+}
